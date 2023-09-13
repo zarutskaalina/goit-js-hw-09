@@ -35,7 +35,7 @@ let startCountdown = null;
 function currentDateSelection(selectedDates) {
   const currentDate = Date.now();
   if (selectedDates < currentDate) {
-    return alert('Please choose a date in the future');
+    Notiflix.Notify('Please choose a date in the future');
   } else {
     buttonStart.removeAttribute('disabled');
   }
