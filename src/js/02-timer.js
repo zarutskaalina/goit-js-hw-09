@@ -14,6 +14,7 @@ currentDays.textContent = '00';
 currentHours.textContent = '00';
 currentMinutes.textContent = '00';
 currentSeconds.textContent = '00';
+let initialRun = true;
 
 const options = {
   enableTime: true,
@@ -52,26 +53,36 @@ buttonStart.addEventListener('click', () => {
 
 function startTimer() {
   timeDifference -= 1000;
-
-  if (currentMinutes.textContent <= 0 && currentSeconds <= 0) {
+  if (
+    !initialRun &&
+    currentMinutes.textContent === '00' &&
+    currentSeconds.textContent === '00'
+  ) {
     Notiflix.Notify.success('Time is up');
     clearInterval(timeId);
   } else {
+    if (initialRun) {
+      initialRun = false;
+    }
     startCountdown = convertMs(timeDifference);
+    console.log(startCountdown);
     dateDisplay(startCountdown);
   }
 }
+
+const addZeroPrefix = time => (time < 10 ? `0${time}` : time);
 
 function convertMs(ms) {
   const second = 1000;
   const minute = second * 60;
   const hour = minute * 60;
   const day = hour * 24;
-
-  const days = Math.floor(ms / day);
-  const hours = Math.floor((ms % day) / hour);
-  const minutes = Math.floor(((ms % day) % hour) / minute);
-  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+  const days = addZeroPrefix(Math.floor(ms / day));
+  const hours = addZeroPrefix(Math.floor((ms % day) / hour));
+  const minutes = addZeroPrefix(Math.floor(((ms % day) % hour) / minute));
+  const seconds = addZeroPrefix(
+    Math.floor((((ms % day) % hour) % minute) / second)
+  );
 
   return { days, hours, minutes, seconds };
 }

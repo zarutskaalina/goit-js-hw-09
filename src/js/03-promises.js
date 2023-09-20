@@ -9,6 +9,16 @@ function onSubmit(e) {
 
   let delay = Number(form.delay.value);
 
+  console.log(Number(form.step.value));
+
+  if (
+    delay < 0 ||
+    Number(form.step.value) < 0 ||
+    Number(form.amount.value) <= 0
+  ) {
+    Notiflix.Notify.failure('Enter a number greater than 0!');
+  }
+
   for (let i = 1; i <= form.amount.value; i += 1) {
     createPromise(i, delay)
       .then(({ position, delay }) => {
